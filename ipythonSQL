@@ -70,3 +70,8 @@ memname
 51  VPS_SUBWAYCARDS_ADDINFO
 52  VPS_SWCARD_ADDINFO_VPS_CUST_SMP
 '''
+
+# how to see column names in a table
+result = wrds.sql('select name from dictionary.columns where libname="WCAI" and memname="TABLENAME"') # tablename must be uppercase
+print(result.to_string())
+
