@@ -1,0 +1,11 @@
+# how to query and save query output
+
+import pandas as pd
+
+result = wrds.sql('select count(*) from WCAI.pos_ordersale') # sample query
+print(result.to_string()) # prints query
+result.to_csv('count.csv') # saves output as a csv
+
+ls # shows that 'count.csv' is in your directory
+
+exit #exit ipython. In home directory, 'ls' will also show count.csv. From here, you can use any editor (e.g. nano) if you want to edit the csv
