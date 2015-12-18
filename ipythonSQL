@@ -14,6 +14,10 @@ exit #exit ipython. In home directory, 'ls' will also show count.csv. From here,
 result=wrds.sql('select * from WCAI.VPS_POS_ORDERS (obs=10)') # obs=10 limits output to 10
 result.to_csv('sampleVPS_POS_ORDERS.csv')
 
+# dates
+result=wrds.sql('select * from WCAI.VPS_POS_ORDERS (obs=10) where POS_ORDER_DATE = "21sep2013"d ')
+result = wrds.sql('select cusip,permno,date,bidlo,askhi from CRSP.DSF where date between "07jan2013"d and "08jan2013"d')
+
 # how to see 'real' list of tables (although there are 37 tables, there are 16 additional tables that are e.g. samples of the the original tables)
 result = wrds.sql('select distinct memname from dictionary.columns where libname="WCAI"')
 print(result.to_string())
