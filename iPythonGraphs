@@ -1,0 +1,12 @@
+
+# 1. download xming from http://www.straightrunning.com/XmingNotes/ ("public domain releases", "xming")
+# 2. Launch XMing.
+# 3. Next, launch PuTTY and check the following: Connection > SSH > X11 > Enable X11 Forwarding
+# 4. In PuTTY, connect to wrds-cloud.wharton.upenn.edu
+# 5. Authenticate as normal
+
+%pylab
+
+result=wrds.sql('select POS_ORDER_DATE as DATE, count(*) as VPS_TRANSACTION_COUNT from WCAI.VPS_POS_ORDERS where POS_ORDER_DATE between "21sep2013"d and "25sep2013"d GROUP BY POS_ORDER_DATE', 'DATE')
+## in the query above, 'POS_ORDER_DATE as DATE' and 'count(*) as VPS_TRANSACTION_COUNT' will give your x and y labels. 
+result.plot()
