@@ -1,0 +1,78 @@
+
+# coding: utf-8
+
+# In[5]:
+
+import os
+import pandas as pd
+import numpy as np
+
+
+# In[9]:
+
+cd C:\Users\patrick.carey\Desktop\wcai
+
+
+# In[15]:
+
+#explore pos_ordersale, use readline due to file size
+pos_ordersale = open("C:\\Users\\patrick.carey\\Desktop\\wcai\\pos_ordersale.csv", "r")
+line = pos_ordersale.readline()
+print(line)
+
+
+# In[11]:
+
+#explore store_restaurant, use pandas since file is not large
+store_restaurant = pd.read_csv("C:\\Users\\patrick.carey\\Desktop\\wcai\\storeRestaurant.csv")
+
+
+# In[19]:
+
+#retrieve chicago FAF codes and turn into list
+Chicago_FAF = store_restaurant.loc[store_restaurant['FAF_MKT_NM'] == 'CHICAGO']
+Chicago_FAF_codes = Chicago_FAF["STORE_NUMBER"]
+Chicago_FAF_codes = list(Chicago_FAF_codes)
+
+
+# In[22]:
+
+#make new Pos with chicago FAF codes
+#note using "with" statement automatically closes files when we are done processing
+with open("C:\\Users\\patrick.carey\\Desktop\\wcai\\pos_ordersale.csv", 'r') as f:
+    with open("C:\\Users\\patrick.carey\\Desktop\\wcai\\pos_ordersale_Chi_FAF.csv", "a") as newf: #creates file to write to
+        line = f.readline() #read variable headings
+        newf.write(line) #write variable headings to new file
+        while line:
+            if any(s in line for s in Chicago_FAF_codes): 
+                newf.write(line) #if codes we found earlier are in the row it writes to new file
+            line=f.readline() # reads next line and breaks when no lines are left with while loop
+        
+
+
+# In[23]:
+
+#retrieve chicago city codes
+Chicago_CITY = store_restaurant.loc[store_restaurant['STORE_CITY'] == 'Chicago']
+Chicago_CITY_codes = Chicago_CITY["STORE_NUMBER"]
+Chicago_CITY_codes = list(Chicago_CITY_codes)
+
+
+# In[24]:
+
+# new POS with city of Chicago only
+with open("C:\\Users\\patrick.carey\\Desktop\\wcai\\pos_ordersale_Chi_FAF.csv", 'r') as f:
+    with open("C:\\Users\\patrick.carey\\Desktop\\wcai\\pos_ordersale_Chi_CITY.csv", "a") as newf:
+        line = f.readline()
+        newf.write(line)
+        while line:
+            if any(s in line for s in Chicago_CITY_codes):
+                newf.write(line)
+            line=f.readline()
+
+
+# In[27]:
+
+#view new data with pandas, encoding ISO-8859-1 helps with issues when reading for some files
+data = pd.read_csv("C:\\Users\\patrick.carey\\Desktop\\wcai\\pos_ordersale_Chi_FAF.csv", encoding = "ISO-8859-1")
+data
