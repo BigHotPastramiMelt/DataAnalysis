@@ -1,0 +1,33 @@
+import pandas as pd
+import numpy as np
+#retrieve codes and turn into list
+data = pd.read_csv("C:\\Users\\patrick.carey\\Desktop\\wcai\\pos_ordersale_Chi_CITY.csv")
+data
+#keys = store_restaurant.loc[store_restaurant['FAF_MKT_NM'] == 'CHICAGO']
+keys = data["MD5KEY_ORDERSALE"]
+keys = list(keys)
+# create new filtered data
+ans = input('Are the keys in a list called "keys" or a file? ').lower()
+if ans == "f" or ans == "file":
+    keyFile = input("Full path of CSV with keys(no header and one key per line):") #can enter csv, one per line
+    with open(keyFile, 'r') as fkey:
+        keys = fkey.read().splitlines()
+
+inputFile = input("Full path of csv to apply key filter to: ") #File you want to create subset of
+with open(inputFile, 'r') as f: #
+    line = f.readline()
+    lineList = line.split(",")
+    print("Columns in file:")
+    print(lineList)
+    keyCol = input("Key Column Name: ")
+    keyCol = lineList.index(keyCol)
+    outputFile = input("Full path to write to: ") # name of file to write to
+    with open(outputFile, "a") as newf:
+        newf.write(line)
+        line = f.readline()
+        lineList = line.split(",")
+        while line:
+            if any(k in lineList[keyCol] for k in keys):
+                newf.write(line)
+            line=f.readline()
+            lineList=line.split(",")
